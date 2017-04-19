@@ -2,7 +2,7 @@ const config = require('../config');
 
 function log(ctx) {
     if (config.debug) {
-        console.log(ctx.method, ctx.header.host + ctx.url)
+        // console.log(ctx.method, ctx.header.host + ctx.url)
     }
 }
 

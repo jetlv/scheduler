@@ -12,13 +12,13 @@ app.use(jsonp());
 
 //Router
 const gateway = require('./router/gateway')
+const broken = require('./router/broken')
 app.use(gateway.routes(), gateway.allowedMethods());
+app.use(broken.routes(), broken.allowedMethods());
 
 app.use(async(ctx, next) => {
-    console.log('main - before next');
     await next();
-    console.log('main - after next');
-    ctx.body = {
+    ctx.response.body = {
         success: false,
         code: config.code_system,
         message: '错误的路径'

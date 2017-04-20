@@ -13,8 +13,10 @@ app.use(jsonp());
 //Router
 const gateway = require('./router/gateway')
 const broken = require('./router/broken')
+const coordinates = require('./router/coordinates');
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
+app.use(coordinates.routes(), coordinates.allowedMethods());
 
 app.use(async(ctx, next) => {
     await next();

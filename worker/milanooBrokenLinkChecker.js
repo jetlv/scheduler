@@ -77,6 +77,4 @@ let scanAll = async() => {
     sendMail(html);
 }
 
-scanAll();
-
 module.exports = scanAll;

@@ -24,6 +24,7 @@ gateway.get('/gateway', async(ctx, next) => {
                 success: true,
                 code: config.code_success
             }
+            next();
         } catch (error) {
             logger.error(error.message);
         }

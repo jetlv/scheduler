@@ -45,7 +45,7 @@ let gatewayMorning = nodeScheduler.scheduleJob(config.gateway.timerCron1, () => 
 let gatewayAfternoon = nodeScheduler.scheduleJob(config.gateway.timerCron2, () => {
     gatewayChecker({});
 });
-let brokenPic = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, () => {
+let brokenPicNoon = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, () => {
     brokenPic();
 })
 
@@ -56,7 +56,7 @@ process.on("SIGINT", function () {
     console.log("正在撤销定时器...")
     gatewayMorning.cancel();
     gatewayAfternoon.cancel();
-    brokenPic.cancel();
+    brokenPicNoon.cancel();
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
 });

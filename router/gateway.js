@@ -26,9 +26,11 @@ let checker = async(ctx) => {
                 message: '已经执行并且会在执行完毕后入库'
             }
             let inserid = r.insertId;
-            let count = await worker(time);
-            let updateQuery = df('update gateway g set g.g_result = ' + count + ' where g.id = ' + inserid)
-            df(query);
+            let resultEntity = await worker(time);
+            let count = resultEntity.count_504;
+            let badCodes = resultEntity.badResponse;
+            let updateQuery = df('update gateway g set g.g_result = ' + count + ', g.g_badresponse =' + badCodes + ' where g.id = ' + inserid)
+            df(updateQuery);
         } catch (error) {
             logger.error(error.message);
         }

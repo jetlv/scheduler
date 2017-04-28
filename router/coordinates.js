@@ -12,8 +12,18 @@ const coordtransform = require('coordtransform');
 coordinates.get('/coordinates/bd09togcj02', async(ctx) => {
     let lng = ctx.query.lng;
     let lat = ctx.query.lat;
-    let newLatgcj02 = coordtransform.bd09togcj02(lng, lat)[1];
-    let newLnggcj02 = coordtransform.bd09togcj02(lng, lat)[0];
+    // let newLatgcj02 = coordtransform.bd09togcj02(lng, lat)[1];
+    // let newLnggcj02 = coordtransform.bd09togcj02(lng, lat)[0];
+    // ctx.body = {
+    //     success: true,
+    //     lat_gcj02: newLatgcj02,
+    //     lng_gcj02: newLnggcj02
+    // }
+    let x = lng - 0.0065, y = lat - 0.006;
+    let z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * pi);
+    let theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * pi);
+    let newLnggcj02 = z * Math.cos(theta);
+    let newLatgcj02 = z * Math.sin(theta);
     ctx.body = {
         success: true,
         lat_gcj02: newLatgcj02,

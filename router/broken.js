@@ -12,7 +12,6 @@ const worker = require('../worker/milanooBrokenLinkChecker');
 broken.get('/broken', async(ctx, next) => {
     ctx.body = {success: true, code: config.code_success};
     worker();
-
 });
 
 module.exports = broken;

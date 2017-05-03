@@ -7,6 +7,10 @@ const target = config.gateway.target
 const Promise = require('bluebird')
 const df = require('../db/data-fetcher');
 
+/**
+ * 翻墙504测试
+ * @param times
+ */
 let test504 = async(times) => {
     //初始数据入库
     let r = await df(`insert into gateway (g_time, g_result, g_date) values (${times}, '',now())`);
@@ -41,4 +45,23 @@ let test504 = async(times) => {
     df(query)
 }
 
-module.exports = test504;
+/**
+ * 从DB读取dateDiff天的测试结果，0表示当天
+ * @param dateDiff
+ */
+let fetchResults = async(dateDiff) => {
+    if (dateDiff == 0) {
+        dateDiff = 0;
+    }
+    let query = 'SELECT * FROM gateway g WHERE DATEDIFF(g.g_date, NOW()) = ' + dateDiff
+    let results = await df(query);
+    return results;
+    /*results.forEach((r, index, array) => {
+
+     }); */
+}
+
+module.exports = {
+    test504: test504,
+    fetchResults: fetchResults
+};

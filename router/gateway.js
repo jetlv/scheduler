@@ -35,5 +35,5 @@ gateway.get('/gateway', checker);
 
 module.exports = {
     gateway: gateway,
-    checker: checker
+    scheduled_checker : worker
 };

@@ -1,5 +1,5 @@
 module.exports = {
-    port: 3001,
+    port: 3000,
     debug: 0,
     database: {
         DATABASE: 'scheduler',

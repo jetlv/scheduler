@@ -6,7 +6,7 @@ const config = require('./config');
 const nodeScheduler = require('node-schedule')
 
 //Internal
-const gatewayChecker = require('./router/gateway').checker
+const gatewayChecker = require('./router/gateway').scheduled_checker
 const brokenPic = require('./worker/milanooBrokenLinkChecker')
 
 //Middlewares
@@ -40,10 +40,10 @@ app.use(async(ctx, next) => {
 
 //启动一些timer
 let gatewayMorning = nodeScheduler.scheduleJob(config.gateway.timerCron1, () => {
-    gatewayChecker({});
+    gatewayChecker(500);
 });
 let gatewayAfternoon = nodeScheduler.scheduleJob(config.gateway.timerCron2, () => {
-    gatewayChecker({});
+    gatewayChecker(500);
 });
 let brokenPicNoon = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, () => {
     brokenPic();
@@ -62,4 +62,4 @@ process.on("SIGINT", function () {
     process.exit();
 });
 
-app.listen(3000);
+app.listen(config.port);

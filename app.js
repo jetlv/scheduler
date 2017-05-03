@@ -59,6 +59,7 @@ process.on("SIGINT", function () {
     brokenPicNoon.cancel();
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
+    process.exit();
 });
 
 app.listen(3000);

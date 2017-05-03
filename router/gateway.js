@@ -19,18 +19,12 @@ let checker = async(ctx) => {
         }
     } else {
         try {
-            let r = await df(`insert into gateway (g_time, g_result, g_date) values (${time}, '',now())`);
             ctx.body = {
                 success: true,
                 code: config.code_success,
                 message: '已经执行并且会在执行完毕后入库'
             }
-            let inserid = r.insertId;
-            let resultEntity = await worker(time);
-            let count = resultEntity.count_504;
-            let badCodes = resultEntity.badResponse;
-            let updateQuery = df('update gateway g set g.g_result = ' + count + ', g.g_badresponse =' + badCodes + ' where g.id = ' + inserid)
-            df(updateQuery);
+            worker(time)
         } catch (error) {
             logger.error(error.message);
         }

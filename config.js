@@ -14,7 +14,7 @@ module.exports = {
     gateway : {
         timerCron1 : "0 30 8 * * *",
         timerCron2 : "0 0 17 * * *",
-        proxy : 'http://127.0.0.1:1080',
+        proxy : 'http://127.0.0.1:1100',
         target : 'http://www.milanoo.com/product/royal-retro-costume-women-s-victorian-ball-gown-jacquard-floral-green-ruffle-bows-tiered-vintage-princess-costume-p519003.html#m939417'
     },
     brokenChecker : {

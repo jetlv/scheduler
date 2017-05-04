@@ -8,6 +8,7 @@ const nodeScheduler = require('node-schedule')
 //Internal
 const gatewayChecker = require('./router/gateway').scheduled_checker
 const brokenPic = require('./worker/milanooBrokenLinkChecker')
+const dailyReportMaker = require('./router/emailreport').makeReport
 
 //Middlewares
 const loggerAsync = require('./middleware/logger-async')
@@ -23,11 +24,13 @@ const broken = require('./router/broken')
 const coordinates = require('./router/coordinates');
 const uitest = require('./router/uitest')
 const mf = require('./router/mobilefriendly')
+const emailreport = require('./router/emailreport').emailreport
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
 app.use(uitest.routes(), uitest.allowedMethods());
-app.use(mf.routes()).use(mf.allowedMethods())
+app.use(mf.routes(), mf.allowedMethods())
+app.use(emailreport.routes(), emailreport.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();
@@ -49,6 +52,10 @@ let brokenPicNoon = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, ()
     brokenPic();
 })
 
+let dailyReport = nodeScheduler.scheduleJob(config.dailyReport.timerCron, () => {
+    dailyReportMaker();
+})
+
 //系统设置
 process.on("SIGINT", function () {
     console.log("正在愉快的关闭服务器...");
@@ -59,7 +66,7 @@ process.on("SIGINT", function () {
     brokenPicNoon.cancel();
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
-    process.exit();
+    process.exit(0);
 });
 
 app.listen(config.port);

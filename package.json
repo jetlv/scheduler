@@ -12,6 +12,8 @@
     "bluebird": "^3.5.0",
     "cheerio": "^0.22.0",
     "coordtransform": "^2.1.2",
+    "ejs": "^2.5.6",
+    "email-templates": "^2.5.6",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-jsonp": "^2.0.2",

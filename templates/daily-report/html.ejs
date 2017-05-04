@@ -1,0 +1,65 @@
+<h3>UI测试概述</h3>
+<table class="bordered">
+    <thead>
+
+    <tr>
+        <th>今日激活中的测试项目数量</th>
+        <th>今日运行的测试用例数量</th>
+        <th>今日运行失败的用例数量</th>
+        <th>今日用例运行成功率</th>
+    </tr>
+    <tr>
+        <td><%= runningProjectCount %></td>
+        <td><%= runTestCaseCount %></td>
+        <td><%= failureReportCount %></td>
+        <td><%= successRate %></td>
+    </tr>
+
+</table>
+<br>
+<br>
+<h3>504监控概述</h3>
+<table class="bordered">
+    <thead>
+
+    <tr>
+        <th>执行时间</th>
+        <th>执行次数</th>
+        <th>产生错误的次数</th>
+        <th>错误集</th>
+    </tr>
+    <% gatewayResults.forEach(function(item){ %>
+    <tr>
+        <td><%= item.g_date %></td>
+        <td><%= item.g_time %></td>
+        <td><%= item.g_result %></td>
+        <td><%= item.g_badresponse %></td>
+    </tr>
+    <% }) %>
+</table>
+<br>
+<br>
+
+<h3>UI测试用例错误报告</h3>
+
+<table class="features-table">
+    <thead>
+    <tr>
+        <td>项目名称</td>
+        <td>用例名称</td>
+        <td>执行时间</td>
+        <td>异常信息</td>
+    </tr>
+    </thead>
+    <tbody>
+    <% uiTestResults.forEach(function(item){ %>
+    <tr>
+        <td><%= item.PROJECTNAME %></td>
+        <td><%= item.CASENAME %></td>
+        <td><%= item.TIME %></td>
+        <td><%= item.EXCEPTION.length > 50   ? item.EXCEPTION.substr(0, 50) : item.EXCEPTION %></td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+

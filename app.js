@@ -64,6 +64,7 @@ process.on("SIGINT", function () {
     gatewayMorning.cancel();
     gatewayAfternoon.cancel();
     brokenPicNoon.cancel();
+    dailyReport.cancel();
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
     process.exit(0);

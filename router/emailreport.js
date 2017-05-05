@@ -24,7 +24,7 @@ let makeReport = async() => {
     //失败项目的数量
     let failureReportCount = ui.failedTests.length;
     //成功率
-    let successRate = (100 - parseFloat(failureReportCount / ui.reports.length) * 100) + '%';
+    let successRate = (100 - parseFloat(failureReportCount / ui.reports.length).toFixed(3) * 100) + '%';
     //504测试结果集
     let gatewayResults = gateway;
     //UI测试失败结果集

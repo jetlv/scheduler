@@ -28,6 +28,6 @@ module.exports = {
         timerCron: "0 0 12 * * *"
     },
     dailyReport : {
-        timerCron: "0 0 9 * * *"
+        timerCron: "0 30 10 * * *"
     }
 }

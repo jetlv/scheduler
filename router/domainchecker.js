@@ -58,8 +58,7 @@ let checker = async(ctx) => {
             let result = await rp({
                 json: true,
                 uri: 'https://api.ote-godaddy.com/api/v1/domains/available?domain=' + getDomain(link),
-                method: 'GET',
-                proxy: 'http://127.0.0.1:1100'
+                method: 'GET'
             })
             ctx.body = {success: true, available: result.available}
         }

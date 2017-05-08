@@ -25,12 +25,14 @@ const coordinates = require('./router/coordinates');
 const uitest = require('./router/uitest')
 const mf = require('./router/mobilefriendly')
 const emailreport = require('./router/emailreport').emailreport
+const domainChecker = require('./router/domainchecker').domainChecker
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
 app.use(uitest.routes(), uitest.allowedMethods());
 app.use(mf.routes(), mf.allowedMethods())
 app.use(emailreport.routes(), emailreport.allowedMethods())
+app.use(domainChecker.routes(), domainChecker.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();

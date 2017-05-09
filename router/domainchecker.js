@@ -61,6 +61,8 @@ let checker = async(ctx) => {
                 method: 'GET'
             })
             ctx.body = {success: true, available: result.available}
+        } else {
+            ctx.body = {success: true, available: false}
         }
     }
 

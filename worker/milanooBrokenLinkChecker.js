@@ -28,8 +28,8 @@ let generalInfoScraping = async() => {
  */
 let scanAll = async() => {
     let result = [];
-    // let urls = await generalInfoScraping();
-    let urls = ['http://www.milanoo.com/search?type=search&keyword=588157'];
+    let urls = await generalInfoScraping();
+    // let urls = ['http://www.milanoo.com/search?type=search&keyword=588157'];
     //将本次操作记录到数据库
     let total = urls.length;
     let QUERY_SAVE_OPERATION = `insert into broken (b_time, b_total, b_found) values (now(), ${total}, 0)`;

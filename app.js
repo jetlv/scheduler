@@ -7,7 +7,7 @@ const nodeScheduler = require('node-schedule')
 
 //Internal
 const gatewayChecker = require('./router/gateway').scheduled_checker
-const brokenPic = require('./worker/milanooBrokenLinkChecker')
+const brokenPic = require('./worker/milanooBrokenLinkChecker').scanAll
 const dailyReportMaker = require('./router/emailreport').makeReport
 
 //Middlewares

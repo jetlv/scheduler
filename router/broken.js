@@ -7,7 +7,7 @@ const df = require('../db/data-fetcher');
 const config = require('../config');
 const moment = require('moment');
 const logger = require('../tool').logger;
-const worker = require('../worker/milanooBrokenLinkChecker');
+const worker = require('../worker/milanooBrokenLinkChecker').scanAll;
 
 broken.get('/broken', async(ctx, next) => {
     ctx.body = {success: true, code: config.code_success};

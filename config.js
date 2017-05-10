@@ -15,6 +15,13 @@ module.exports = {
         PORT: '3306',
         HOST: '192.168.12.104'
     },
+    database_milanootest: {
+        DATABASE: 'milanoo',
+        USERNAME: 'dev',
+        PASSWORD: 'devpass',
+        PORT: '3306',
+        HOST: '192.168.11.24'
+    },
     code_success: 0, //操作成功无异常
     code_system: 10000, //系统级别错误
     //504gateway checker的设置

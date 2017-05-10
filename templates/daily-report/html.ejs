@@ -40,6 +40,29 @@
 <br>
 <br>
 
+<h3>破图扫描</h3>
+<table class="bordered">
+    <thead>
+
+    <tr>
+        <th>执行时间</th>
+        <th>破图链接</th>
+        <th>商品id</th>
+        <th>破图原因</th>
+    </tr>
+    <% brokenResults.forEach(function(item){ %>
+    <tr>
+        <td><%= item.b_time %></td>
+        <td><%= item.bp_link %></td>
+        <td><%= item.bp_pid %></td>
+        <td><%= item.bp_reason %></td>
+    </tr>
+    <% }) %>
+</table>
+
+<br>
+<br>
+
 <h3>UI测试用例错误报告</h3>
 
 <table class="features-table">

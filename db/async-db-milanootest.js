@@ -1,12 +1,11 @@
 const mysql = require('mysql');
 const config = require('../config');
-const logger = require('../tool').logger
 
 const pool = mysql.createPool({
-    host: config.database.HOST,
-    user: config.database.USERNAME,
-    password: config.database.PASSWORD,
-    database: config.database.DATABASE
+    host: config.database_milanootest.HOST,
+    user: config.database_milanootest.USERNAME,
+    password: config.database_milanootest.PASSWORD,
+    database: config.database_milanootest.DATABASE
 })
 
 let query = (sql, values) => {
@@ -18,7 +17,6 @@ let query = (sql, values) => {
                 connection.query(sql, values, (err, rows) => {
 
                     if (err) {
-                        logger.error('Something wrong with sql: ' + sql)
                         reject(err)
                     } else {
                         resolve(rows)

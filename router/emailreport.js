@@ -11,24 +11,64 @@ const templateDir = 'templates/daily-report'
 const EmailTemplate = require('email-templates').EmailTemplate
 const gatewayReport = require('../worker/gateway504Checker').fetchResults;
 const uiReport = require('../worker/milanooUITestTrigger').queryUiTestInfo
+const uiReportByDate = require('../worker/milanooUITestTrigger').queryUiTestInfoByDate
+const brokenReport = require('../worker/milanooBrokenLinkChecker').queryResult
 const tool = require('../tool')
 
-let makeReport = async() => {
+/**
+ * 抽取出当天真心没有跑成功的case
+ * @param failedReports 所有失败的结果集
+ * @param allReports  所有结果集
+ * @returns {Array}
+ */
+let extractActualFailed = (failedReports, allReports) => {
+    let actualFailed = [];
+    failedReports.forEach((failed, index, array) => {
+        let suceess = false;
+        let testCaseId = failed.CASEID;
+        allReports.forEach((report, index, array) => {
+            if ((report.CASEID == testCaseId) && (report.STATUS == 2)) {
+                suceess = true;
+            }
+        })
+        if (!suceess) {
+            actualFailed.push(failed);
+        }
+    })
+    return actualFailed;
+}
+
+
+let makeReport = async(dateDiff) => {
     let template = new EmailTemplate(templateDir)
-    let ui = await uiReport();
-    let gateway = await gatewayReport();
+    let ui = [];
+    let broken = [];
+    let gateway = [];
+    if(dateDiff) {
+        ui = await uiReportByDate(dateDiff);
+        broken = await brokenReport(dateDiff)
+        gateway = await gatewayReport(dateDiff);
+    } else {
+        ui = await uiReport();
+        broken = await brokenReport();
+        gateway = await gatewayReport();
+    }
     //当前活跃项目
     let runningProjectCount = ui.projects.length;
     //当日运行的用例数量
     let runTestCaseCount = ui.reports.length;
+    //当天彻底没有跑成功的测试用例
+    let actualFailed = extractActualFailed(ui.failedTests, ui.reports);
     //失败项目的数量
-    let failureReportCount = ui.failedTests.length;
+    let failureReportCount = actualFailed.length;
     //成功率
     let successRate = (100 - parseFloat(failureReportCount / ui.reports.length).toFixed(3) * 100) + '%';
     //504测试结果集
     let gatewayResults = gateway;
     //UI测试失败结果集
-    let uiTestResults = ui.failedTests
+    let uiTestResults = actualFailed
+    //破图扫描结果集
+    let brokenResults = broken;
     //数据加载
     let loader = {
         runningProjectCount: runningProjectCount,
@@ -36,21 +76,33 @@ let makeReport = async() => {
         failureReportCount: failureReportCount,
         successRate: successRate,
         gatewayResults: gatewayResults,
-        uiTestResults: uiTestResults
+        uiTestResults: uiTestResults,
+        brokenResults : brokenResults
     }
-    // let html = template.render(loader).html;
     let rendered = await template.render(loader)
-    tool.sendDailyReport(rendered.html)
+    // tool.sendDailyReport(rendered.html);
+    tool.sendDailyReportToPeople(rendered.html, 'lvchao@milanoo.com,wangzhihua@milanoo.com')
     return new Promise((res, rej) => {
         res(loader);
     })
 }
 
 /**
- * 作统计报告
+ * 作昨天统计报告
  */
-emailreport.get('/report/send', async(ctx, next) => {
+emailreport.get('/report/send/', async(ctx, next) => {
     await makeReport();
+    ctx.body = {
+        success: true
+    }
+});
+
+/**
+ * 作某一天的统计报告
+ */
+emailreport.get('/report/send/:dateDiff', async(ctx, next) => {
+    let dateDiff = ctx.params.dateDiff;
+    await makeReport(dateDiff);
     ctx.body = {
         success: true
     }

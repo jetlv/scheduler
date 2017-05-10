@@ -51,7 +51,7 @@ let test504 = async(times) => {
  */
 let fetchResults = async(dateDiff) => {
     if (!dateDiff) {
-        dateDiff = 0;
+        dateDiff = -1;
     }
     let query = 'SELECT * FROM gateway g WHERE DATEDIFF(g.g_date, NOW()) = ' + dateDiff
     let results = await df(query);

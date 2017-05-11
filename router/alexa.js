@@ -41,7 +41,7 @@ let rank = async url => {
     } else {
         let trafficRank = parsedXml.ALEXA.SD[0].POPULARITY[0].$;
         let countryRank = parsedXml.ALEXA.SD[0].COUNTRY[0].$;
-        let result = {trafficRank: trafficRank, localTrafficRank: countryRank}
+        let result = {alexaTrafficRank: trafficRank, localTrafficRank: countryRank}
         return result;
     }
 }

@@ -28,6 +28,7 @@ const emailreport = require('./router/emailreport').emailreport
 const domainChecker = require('./router/domainchecker').domainChecker
 const helper = require('./router/helper').helper;
 const alexa = require('./router/alexa').alexa
+const diy = require('./router/diy').diy
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
@@ -37,6 +38,7 @@ app.use(emailreport.routes(), emailreport.allowedMethods())
 app.use(domainChecker.routes(), domainChecker.allowedMethods())
 app.use(helper.routes(), helper.allowedMethods())
 app.use(alexa.routes(), alexa.allowedMethods())
+app.use(diy.routes(), diy.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();

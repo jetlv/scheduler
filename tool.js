@@ -10,6 +10,8 @@ log4js.configure({
 const logger = log4js.getLogger('cheese');
 logger.setLevel('ERROR');
 const nodemailer = require('nodemailer');
+const validator = require('validator');
+
 let sendMail = (html) => {
     var transporter = nodemailer.createTransport({
         host: 'smtp.163.com',
@@ -106,9 +108,41 @@ let sendDailyReportToPeople = (html, receivers) => {
     });
 }
 
+/**
+ * 验证url
+ * @param link
+ * @returns {boolean}
+ */
+let urlValidator = link => {
+    if (typeof link !== 'string') {
+        return false;
+    }
+    /** Validate url */
+    let validatorOptions = {
+        protocols: ['http', 'https'],
+        require_protocol: true,
+        allow_underscores: true,
+        allow_trailing_dot: true
+    };
+    if (link.indexOf('#') !== -1) {
+        let mainPart = link.split('#')[0];
+        if (!validator.isURL(mainPart, validatorOptions)) {
+            return false;
+        }
+        return true;
+    } else {
+        if (!validator.isURL(link, validatorOptions)) {
+            return false;
+        }
+        return true;
+    }
+}
+
+
 module.exports = {
     logger: logger,
     sendMail: sendMail,
     sendDailyReport : sendDailyReport,
-    sendDailyReportToPeople : sendDailyReportToPeople
+    sendDailyReportToPeople : sendDailyReportToPeople,
+    urlValidator : urlValidator
 }

@@ -6,39 +6,11 @@ const domainChecker = new Router();
 const config = require('../config');
 const moment = require('moment');
 const logger = require('../tool').logger;
+const urlValidator = require('../tool').urlValidator
 const fetcher = require('../worker/gateway504Checker').fetchResults;
 const getDomain = require('get-domain-from-url');
 const validator = require('validator');
 const rp = require('request-promise')
-/**
- * 验证url
- * @param link
- * @returns {boolean}
- */
-let urlValidator = link => {
-    if (typeof link !== 'string') {
-        return false;
-    }
-    /** Validate url */
-    let validatorOptions = {
-        protocols: ['http', 'https'],
-        require_protocol: true,
-        allow_underscores: true,
-        allow_trailing_dot: true
-    };
-    if (link.indexOf('#') !== -1) {
-        let mainPart = link.split('#')[0];
-        if (!validator.isURL(mainPart, validatorOptions)) {
-            return false;
-        }
-        return true;
-    } else {
-        if (!validator.isURL(link, validatorOptions)) {
-            return false;
-        }
-        return true;
-    }
-}
 
 /**
  * 测试domain是否可用

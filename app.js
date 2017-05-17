@@ -9,6 +9,7 @@ const nodeScheduler = require('node-schedule')
 const gatewayChecker = require('./router/gateway').scheduled_checker
 const brokenPic = require('./worker/milanooBrokenLinkChecker').scanAll
 const dailyReportMaker = require('./router/emailreport').makeReport
+const searchResultMonitor = require('./worker/milanoooSearchResultChecker').searchProduct
 
 //Middlewares
 const loggerAsync = require('./middleware/logger-async')
@@ -68,6 +69,10 @@ let dailyReport = nodeScheduler.scheduleJob(config.dailyReport.timerCron, () => 
     dailyReportMaker();
 })
 
+let searchResult = nodeScheduler.scheduleJob(config.searchCategory.timerCron, () => {
+    searchResultMonitor('http://m.milanoo.com/search?searchTag=1&keyword=71814');
+})
+
 //系统设置
 process.on("SIGINT", function () {
     console.log("正在愉快的关闭服务器...");
@@ -77,6 +82,7 @@ process.on("SIGINT", function () {
     gatewayAfternoon.cancel();
     brokenPicNoon.cancel();
     dailyReport.cancel();
+    searchResult.cancel();
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
     process.exit(0);

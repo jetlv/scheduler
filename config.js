@@ -36,5 +36,8 @@ module.exports = {
     },
     dailyReport : {
         timerCron: "0 30 10 * * *"
+    },
+    searchCategory : {
+        timerCron : "*/2 * * * * *",
     }
 }

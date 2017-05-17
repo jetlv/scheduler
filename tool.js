@@ -12,6 +12,10 @@ logger.setLevel('ERROR');
 const nodemailer = require('nodemailer');
 const validator = require('validator');
 
+/**
+ * 发送邮件
+ * @param html
+ */
 let sendMail = (html) => {
     var transporter = nodemailer.createTransport({
         host: 'smtp.163.com',
@@ -33,6 +37,8 @@ let sendMail = (html) => {
         html: html // html body
     };
 
+
+
     transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             return console.log(error);
@@ -40,6 +46,45 @@ let sendMail = (html) => {
         console.log('Message %s sent: %s', info.messageId, info.response);
     });
 }
+
+/**
+ * 指定邮件详情发送邮件
+ * @param html 内容
+ * @param subject 主题
+ * @param from 来自
+ * @param receivers 接受者
+ */
+let sendMailWithDetails = (html, subject, from, receivers) => {
+    var transporter = nodemailer.createTransport({
+        host: 'smtp.163.com',
+        secureConnection: true,
+        port: 465,
+        auth: {
+            user: 'qadepartment@163.com',
+            pass: 'bdyxdovlpgerwhtc'
+        },
+        tls: {
+            secureProtocol: "TLSv1_method"
+        }
+    });
+
+    let mailOptions = {
+        from: '"' + from + '" <qadepartment@163.com>', // sender address
+        to: receivers , // list of receivers
+        subject: subject, // Subject line
+        html: html // html body
+    };
+
+
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message %s sent: %s', info.messageId, info.response);
+    });
+}
+
 
 /**
  * 发送自动化测试日报，给到lvchao@milanoo.com和wangzhihua@milanoo.com
@@ -172,6 +217,7 @@ let getSessions = (resp) => {
 module.exports = {
     logger: logger,
     sendMail: sendMail,
+    sendMailWithDetails : sendMailWithDetails,
     sendDailyReport: sendDailyReport,
     sendDailyReportToPeople: sendDailyReportToPeople,
     urlValidator: urlValidator,

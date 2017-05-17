@@ -16,6 +16,10 @@ const logger = require('../tool').logger;
 const worker = require('../worker/businessWorker')
 const rp = require('request-promise')
 
+/**
+ * 巴西分期全流程
+ * @param ctx
+ */
 let baxifenqi = async ctx => {
     // let placeOrder = worker.placeOrder;
     let baxifenqi = worker.fenqi;
@@ -26,6 +30,7 @@ let baxifenqi = async ctx => {
     let context = await baxifenqi(lang, email, password, productId);
     ctx.body = context;
 }
+
 
 business.get('/business/baxifenqi', baxifenqi)
 

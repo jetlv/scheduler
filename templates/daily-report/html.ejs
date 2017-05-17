@@ -63,6 +63,27 @@
 <br>
 <br>
 
+<h3>搜索结果监控</h3>
+<table class="bordered">
+    <thead>
+
+    <tr>
+        <th>执行时间</th>
+        <th>执行的URL</th>
+        <th>是否已发送即时报告</th>
+    </tr>
+    <% search.forEach(function(item){ %>
+    <tr>
+        <td><%= item.sr_time %></td>
+        <td><%= item.sr_url %></td>
+        <td><%= item.reported ? '是' : '否' %></td>
+    </tr>
+    <% }) %>
+</table>
+
+<br>
+<br>
+
 <h3>UI测试用例错误报告</h3>
 
 <table class="features-table">
@@ -80,7 +101,7 @@
         <td><%= item.PROJECTNAME %></td>
         <td><%= item.CASENAME %></td>
         <td><%= item.TIME %></td>
-        <td><%= item.EXCEPTION.length > 50   ? item.EXCEPTION.substr(0, 50) : item.EXCEPTION %></td>
+        <td><%= item.EXCEPTION.length > 50 ? item.EXCEPTION.substr(0, 50) : item.EXCEPTION %></td>
     </tr>
     <% }) %>
     </tbody>

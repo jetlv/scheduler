@@ -36,8 +36,21 @@ let searchProduct = async searchUrl => {
     }
 }
 
-searchProduct('http://m.milanoo.com/search?searchTag=1&keyword=71814')
+/**
+ * 查询搜索结果监控结果
+ * @param dateDiff
+ * @returns {*}
+ */
+let querySearchResult = async dateDiff => {
+    if (dateDiff === null) {
+        dateDiff = -1;
+    }
+    let QUERY_LIST = `select * from search_result sr where datediff(sr.sr_time, now()) = ${dateDiff}`
+    let list = await df(QUERY_LIST)
+    return list;
+}
 
 module.exports = {
-    searchProduct: searchProduct
+    searchProduct: searchProduct,
+    querySearchResult: querySearchResult
 }

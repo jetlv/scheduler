@@ -13,6 +13,7 @@ const gatewayReport = require('../worker/gateway504Checker').fetchResults;
 const uiReport = require('../worker/milanooUITestTrigger').queryUiTestInfo
 const uiReportByDate = require('../worker/milanooUITestTrigger').queryUiTestInfoByDate
 const brokenReport = require('../worker/milanooBrokenLinkChecker').queryResult
+const searchResult = require('../worker/milanoooSearchResultChecker').querySearchResult
 const tool = require('../tool')
 
 /**
@@ -44,14 +45,17 @@ let makeReport = async(dateDiff) => {
     let ui = [];
     let broken = [];
     let gateway = [];
+    let search = [];
     if(dateDiff) {
         ui = await uiReportByDate(dateDiff);
         broken = await brokenReport(dateDiff)
         gateway = await gatewayReport(dateDiff);
+        search = await searchResult(dateDiff)
     } else {
         ui = await uiReport();
         broken = await brokenReport();
         gateway = await gatewayReport();
+        search = await searchResult()
     }
     //当前活跃项目
     let runningProjectCount = ui.projects.length;
@@ -77,7 +81,8 @@ let makeReport = async(dateDiff) => {
         successRate: successRate,
         gatewayResults: gatewayResults,
         uiTestResults: uiTestResults,
-        brokenResults : brokenResults
+        brokenResults : brokenResults,
+        search : search
     }
     let rendered = await template.render(loader)
     // tool.sendDailyReport(rendered.html);
@@ -98,7 +103,7 @@ emailreport.get('/report/send/', async(ctx, next) => {
 });
 
 /**
- * 作某一天的统计报告
+ * 作某一天的统计报告,0代表今天
  */
 emailreport.get('/report/send/:dateDiff', async(ctx, next) => {
     let dateDiff = ctx.params.dateDiff;

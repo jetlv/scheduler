@@ -39,8 +39,28 @@ let getIdByMail = async ctx => {
     }
 }
 
+/**
+ * 方法描述： 按语言站跑完一整个订单流程，到打包发货为止，商品是固定的
+ * 老接口访问例子 : http://192.168.12.100:1337/api/progress/completeorder/en/jetlyu@milanoo.com/123456
+ * @param ctx
+ */
+let completedOrder = async ctx => {
+    try {
+        let lang = ctx.params.lang;
+        let email = ctx.params.email;
+        let password = ctx.params.password;
+        if (!email || !password) {
+            ctx.body = {success: false, message: "请传入邮箱和密码"}
+        }
+        let result = await rp.get('http://192.168.12.100:1337/api/progress/completeorder/' + lang + '/' + email + '/' + password);
+        ctx.body = result;
+    } catch (err) {
+        ctx.body = {success: false, message: err}
+    }
+}
 
 helper.get('/old/ht/member/id/:email', getIdByMail)
+helper.get('/old/progress/completeorder/:lang/:email/:password', completedOrder)
 
 module.exports = {
     helper: helper

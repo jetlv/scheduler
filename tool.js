@@ -4,7 +4,7 @@
 const log4js = require('log4js');
 const moment = require('moment');
 log4js.configure({
-    appenders: [{type: 'dateFile', filename: 'cheese.log', "pattern": "-yyyy-MM-dd","alwaysIncludePattern": true}],
+    appenders: [{type: 'dateFile', filename: 'cheese.log', "pattern": "-yyyy-MM-dd", "alwaysIncludePattern": true}],
     categories: {default: {appenders: ['cheese'], level: 'error'}}
 });
 const logger = log4js.getLogger('cheese');
@@ -138,11 +138,43 @@ let urlValidator = link => {
     }
 }
 
+/**
+ * 生成随机字符串
+ * @param len
+ * @returns {string}
+ */
+let randomStr = len => {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
+
+/**
+ * 根据登陆后的响应生成cookie字符串
+ * @param resp
+ * @returns {string}
+ */
+let getSessions = (resp) => {
+    let cookies = [];
+    let fullArr = resp.headers['set-cookie'];
+    for (let i in fullArr) {
+        cookies.push(fullArr[i].split(';')[0]);
+    }
+
+    return cookies.join("; ");
+}
 
 module.exports = {
     logger: logger,
     sendMail: sendMail,
-    sendDailyReport : sendDailyReport,
-    sendDailyReportToPeople : sendDailyReportToPeople,
-    urlValidator : urlValidator
+    sendDailyReport: sendDailyReport,
+    sendDailyReportToPeople: sendDailyReportToPeople,
+    urlValidator: urlValidator,
+    randomStr: randomStr,
+    getSessions: getSessions
 }

@@ -5,6 +5,7 @@ const moment = require('moment');
 const logger = require('../tool').logger;
 const rp = require('request-promise')
 const urlValidator = require('../tool').urlValidator
+const wapp = require('wappalyzer');
 
 let fetchFromWappalyzer = async ctx => {
     let link = ctx.query.link;
@@ -22,8 +23,40 @@ let fetchFromWappalyzer = async ctx => {
     }
 }
 
+/**
+ * Promisify Wappalyzer
+ * @param url
+ */
+let promisedWappalyzer = url => {
+    return new Promise((res, rej) => {
+        wapp.run([url, '--quiet'], function (stdout, stderr) {
+            if (stdout) {
+                res(stdout);
 
-wappalyzer.get('/wappalyzer', fetchFromWappalyzer);
+            }
+            if (stderr) {
+                rej(stderr)
+            }
+        });
+    })
+}
+
+
+let fetchFromWappalyzerOfficial = async ctx => {
+    let link = ctx.query.link;
+    if ((!link) || !urlValidator(link)) {
+        ctx.body = {success: false, message: 'Please input valid url'};
+        return;
+    }
+    try {
+        let result = await promisedWappalyzer(link)
+        ctx.body = {success: true, result: JSON.parse(result)}
+    } catch (err) {
+        ctx.body = {success: false, message: err}
+    }
+}
+
+wappalyzer.get('/wappalyzer', fetchFromWappalyzerOfficial);
 
 
 module.exports = {

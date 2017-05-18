@@ -27,6 +27,7 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
     "validator": "^7.0.0",
+    "wappalyzer": "^4.1.0",
     "xml2js": "^0.4.17"
   }
 }

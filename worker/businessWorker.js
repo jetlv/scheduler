@@ -217,9 +217,13 @@ let placeOrder = async(lang, email, password, productId, currency) => {
  * @param email
  * @param password
  * @param productId
+ * @param month 分期的月数
  * @returns {{}}
  */
-let fenqi = async(lang, email, password, productId)=> {
+let fenqi = async(lang, email, password, productId, month)=> {
+    if (month === null) {
+        month = 3
+    }
     let context = await placeOrder(lang, email, password, productId, 'BRL');
     let orderId = context.orderId;
     let paymentUrl = `http://test.item.www.milanoo.com/shop/Payment-id-${orderId}.html`;
@@ -228,7 +232,7 @@ let fenqi = async(lang, email, password, productId)=> {
         formAuth: context.formAuth,
         act: 'payment',
         payment_type: 'xykfq',
-        pay_installments: 3,
+        pay_installments: month,
         opcse_cardHolderName: 'DSAD',
         opcse_payCPF: '491-122-534-30',
         opcse_payCNPJ: '',
@@ -246,7 +250,6 @@ let fenqi = async(lang, email, password, productId)=> {
     let body = await rp(fenqiOptions);
     return context;
 }
-
 
 
 module.exports = {

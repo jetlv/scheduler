@@ -26,13 +26,13 @@ let searchProduct = async searchUrl => {
     if (!$('.picture').length) {
         let QUERY_INSERTERROR = `insert into search_result (sr_url, sr_time) values ('${searchUrl}', now())`
         let inserted = await df(QUERY_INSERTERROR)
-        if ((moment().get('minute') == 30)) {
-            let QUERY_LISTERROR = 'select * from search_result sr where sr.sr_reported = 0'
-            let issueList = await df(QUERY_LISTERROR)
-            tool.sendMailWithDetails(`搜索结果页面又出现了${issueList.length}次错误`, '搜索结果监控报告', '米兰自动化测试中心', 'lvchao@milanoo.com,wangzhihua@milanoo.com')
-            let QUERY_UPDATEALL = 'update search_result sr set sr.sr_reported = 1'
-            await df(QUERY_UPDATEALL)
-        }
+    }
+    if ((moment().get('minute') == 30)) {
+        let QUERY_LISTERROR = 'select * from search_result sr where sr.sr_reported = 0'
+        let issueList = await df(QUERY_LISTERROR)
+        tool.sendMailWithDetails(`搜索结果页面又出现了${issueList.length}次错误`, '搜索结果监控报告', '米兰自动化测试中心', 'lvchao@milanoo.com,wangzhihua@milanoo.com')
+        let QUERY_UPDATEALL = 'update search_result sr set sr.sr_reported = 1'
+        await df(QUERY_UPDATEALL)
     }
 }
 

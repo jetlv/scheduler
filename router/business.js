@@ -27,7 +27,8 @@ let baxifenqi = async ctx => {
     let email = ctx.query.email;
     let password = ctx.query.password;
     let productId = ctx.query.productId;
-    let context = await baxifenqi(lang, email, password, productId);
+    let month = ctx.query.month
+    let context = await baxifenqi(lang, email, password, productId, month);
     ctx.body = context;
 }
 

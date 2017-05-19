@@ -44,7 +44,7 @@ let searchProduct = async searchUrl => {
  * @returns {*}
  */
 let querySearchResult = async dateDiff => {
-    if (dateDiff === null) {
+    if (dateDiff === null || dateDiff === undefined) {
         dateDiff = -1;
     }
     let QUERY_LIST = `select * from search_result sr where datediff(sr.sr_time, now()) = ${dateDiff}`

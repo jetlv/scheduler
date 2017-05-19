@@ -31,13 +31,18 @@ module.exports = {
         proxy: 'http://127.0.0.1:1100',
         target: 'http://www.milanoo.com/product/royal-retro-costume-women-s-victorian-ball-gown-jacquard-floral-green-ruffle-bows-tiered-vintage-princess-costume-p519003.html#m939417'
     },
+    //broken checker的设置
     brokenChecker: {
         timerCron: "0 0 12 * * *"
     },
+    //测试日报的设置
     dailyReport : {
         timerCron: "0 30 10 * * *"
     },
+    //搜索结果监控设置
     searchCategory : {
         timerCron : "*/2 * * * * *",
-    }
+    },
+    //是否开启所有定时任务
+    openScheduler : true
 }

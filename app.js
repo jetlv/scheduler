@@ -54,35 +54,39 @@ app.use(async(ctx, next) => {
     }
 });
 
+let gatewayMorning, gatewayAfternoon, brokenPicNoon, dailyReport, searchResultTimer
 //启动一些timer
-let gatewayMorning = nodeScheduler.scheduleJob(config.gateway.timerCron1, () => {
-    gatewayChecker(500);
-});
-let gatewayAfternoon = nodeScheduler.scheduleJob(config.gateway.timerCron2, () => {
-    gatewayChecker(500);
-});
-let brokenPicNoon = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, () => {
-    brokenPic();
-})
+if (config.openScheduler) {
+    gatewayMorning = nodeScheduler.scheduleJob(config.gateway.timerCron1, () => {
+        gatewayChecker(500);
+    });
+    gatewayAfternoon = nodeScheduler.scheduleJob(config.gateway.timerCron2, () => {
+        gatewayChecker(500);
+    });
+    brokenPicNoon = nodeScheduler.scheduleJob(config.brokenChecker.timerCron, () => {
+        brokenPic();
+    })
 
-let dailyReport = nodeScheduler.scheduleJob(config.dailyReport.timerCron, () => {
-    dailyReportMaker();
-})
+    dailyReport = nodeScheduler.scheduleJob(config.dailyReport.timerCron, () => {
+        dailyReportMaker();
+    })
 
-let searchResult = nodeScheduler.scheduleJob(config.searchCategory.timerCron, () => {
-    searchResultMonitor('http://m.milanoo.com/search?searchTag=1&keyword=71814');
-})
-
+    searchResultTimer = nodeScheduler.scheduleJob(config.searchCategory.timerCron, () => {
+        searchResultMonitor('http://m.milanoo.com/search?searchTag=1&keyword=71814');
+    })
+}
 //系统设置
 process.on("SIGINT", function () {
     console.log("正在愉快的关闭服务器...");
     // app.close();
     console.log("正在撤销定时器...")
-    gatewayMorning.cancel();
-    gatewayAfternoon.cancel();
-    brokenPicNoon.cancel();
-    dailyReport.cancel();
-    searchResult.cancel();
+    if (config.openScheduler) {
+        gatewayMorning.cancel();
+        gatewayAfternoon.cancel();
+        brokenPicNoon.cancel();
+        dailyReport.cancel();
+        searchResultTimer.cancel();
+    }
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")
     process.exit(0);

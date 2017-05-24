@@ -32,6 +32,7 @@ const alexa = require('./router/alexa').alexa
 const diy = require('./router/diy').diy
 const wappalyzer = require('./router/wappalyzer').wappalyzer
 const business = require('./router/business').business
+const hbp = require('./router/htmlbyphantom').hbp
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
@@ -44,6 +45,7 @@ app.use(alexa.routes(), alexa.allowedMethods())
 app.use(diy.routes(), diy.allowedMethods())
 app.use(wappalyzer.routes(), wappalyzer.allowedMethods())
 app.use(business.routes(), business.allowedMethods())
+app.use(hbp.routes(), hbp.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();

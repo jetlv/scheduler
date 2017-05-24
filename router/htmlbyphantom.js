@@ -8,6 +8,36 @@ const moment = require('moment');
 const logger = require('../tool').logger;
 const phantom = require('phantom')
 const urlValidator = require('../tool').urlValidator
+const Promise = require('bluebird')
+const webdriver = require('selenium-webdriver')
+const by = webdriver.By
+
+let toFetch = async link => {
+    let driver = new webdriver.Builder().forBrowser("chrome").usingServer("http://45.63.25.194:5666/wd/hub").build()
+    try {
+        await driver.get(link)
+        let signIn = false;
+        try {
+            await driver.findElement(by.xpath(`//*[text()='Sign in']`)).click()
+            signIn = true
+        } catch (err) {
+            signIn = false
+        }
+        if (signIn) {
+            await driver.findElement(by.css(`input[type='text']`)).sendKeys("jetlyu@aliyun.com")
+            await driver.findElement(by.css(`input[type='password']`)).sendKeys("lc799110")
+            await driver.findElement(by.css(`input[type='submit']`)).click()
+        }
+        await Promise.delay(1500)
+        let source = await driver.getPageSource()
+        driver.quit()
+        return source
+    } catch (err) {
+        driver.quit()
+        return err
+    }
+
+}
 
 hbp.get('/hbp', async(ctx, next) => {
     let link = ctx.query.link;
@@ -15,28 +45,14 @@ hbp.get('/hbp', async(ctx, next) => {
         ctx.body = {success: false, message: 'Please input valid url'};
         return;
     }
-    const instance = await phantom.create();
-    const page = await instance.createPage();
-
-    const status = await page.open(link);
-    if(status !== 'success'){
-        ctx.body = {
-            success: false,
-            message : 'Can not fetch html'
-        }
-        return
-    }
-    const content = await page.property('content');
-    await instance.exit();
+    let content = await toFetch(link)
     ctx.body = {
-        success : true,
-        html : content
+        success: true,
+        html: content
     }
 });
 
 
-
-
 module.exports = {
-    hbp : hbp
+    hbp: hbp
 };

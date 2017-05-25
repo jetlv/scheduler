@@ -13,7 +13,7 @@ const webdriver = require('selenium-webdriver')
 const by = webdriver.By
 
 let toFetch = async link => {
-    let driver = new webdriver.Builder().forBrowser("chrome").usingServer("http://45.63.25.194:5666/wd/hub").build()
+    let driver = linkedInDriver
     try {
         await driver.get(link)
         let signIn = false;
@@ -28,9 +28,8 @@ let toFetch = async link => {
             await driver.findElement(by.css(`input[type='password']`)).sendKeys("lc799110")
             await driver.findElement(by.css(`input[type='submit']`)).click()
         }
-        await Promise.delay(1500)
+        await Promise.delay(3000)
         let source = await driver.getPageSource()
-        driver.quit()
         return source
     } catch (err) {
         driver.quit()

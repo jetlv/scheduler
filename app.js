@@ -4,6 +4,7 @@ const config = require('./config');
 
 //Third-party
 const nodeScheduler = require('node-schedule')
+const webdriver = require('selenium-webdriver')
 
 //Internal
 const gatewayChecker = require('./router/gateway').scheduled_checker
@@ -33,6 +34,7 @@ const diy = require('./router/diy').diy
 const wappalyzer = require('./router/wappalyzer').wappalyzer
 const business = require('./router/business').business
 const hbp = require('./router/htmlbyphantom').hbp
+const imagemaker = require('./router/imagemaker').imageMaker
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
@@ -46,6 +48,7 @@ app.use(diy.routes(), diy.allowedMethods())
 app.use(wappalyzer.routes(), wappalyzer.allowedMethods())
 app.use(business.routes(), business.allowedMethods())
 app.use(hbp.routes(), hbp.allowedMethods())
+app.use(imagemaker.routes(), imagemaker.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();
@@ -77,6 +80,11 @@ if (config.openScheduler) {
         searchResultMonitor('http://m.milanoo.com/search?searchTag=1&keyword=71814');
     })
 }
+
+if(config.linkedInDriver) {
+    global.linkedInDriver = new webdriver.Builder().forBrowser("chrome").usingServer("http://45.63.25.194:5666/wd/hub").build()
+}
+
 //系统设置
 process.on("SIGINT", function () {
     console.log("正在愉快的关闭服务器...");
@@ -88,6 +96,9 @@ process.on("SIGINT", function () {
         brokenPicNoon.cancel();
         dailyReport.cancel();
         searchResultTimer.cancel();
+    }
+    if(linkedInDriver) {
+        linkedInDriver.quit();
     }
     console.log("已经撤销全部定时器...")
     console.log("服务器成功终止...")

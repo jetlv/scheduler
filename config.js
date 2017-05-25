@@ -44,5 +44,6 @@ module.exports = {
         timerCron : "*/2 * * * * *",
     },
     //是否开启所有定时任务
-    openScheduler : true
+    openScheduler : false,
+    linkedInDriver : true
 }

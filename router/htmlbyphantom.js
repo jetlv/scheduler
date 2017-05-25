@@ -32,8 +32,8 @@ let toFetch = async link => {
         let source = await driver.getPageSource()
         return source
     } catch (err) {
-        driver.quit()
-        return err
+        linkedInDriver = new webdriver.Builder().forBrowser("chrome").usingServer("http://45.63.25.194:5666/wd/hub").build()
+        return toFetch(link)
     }
 
 }

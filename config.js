@@ -45,5 +45,6 @@ module.exports = {
     },
     //是否开启所有定时任务
     openScheduler : false,
-    linkedInDriver : true
+    linkedInDriver : true,
+    staticFolder : './static/'
 }

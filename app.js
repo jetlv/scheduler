@@ -16,9 +16,13 @@ const searchResultMonitor = require('./worker/milanoooSearchResultChecker').sear
 const loggerAsync = require('./middleware/logger-async')
 const bodyParser = require('koa-bodyparser')
 const jsonp = require('koa-jsonp')
+const views = require('koa-views')
 app.use(loggerAsync())
 app.use(bodyParser())
 app.use(jsonp());
+const serve = require('koa-static');
+app.use(serve(__dirname + '/static'))
+
 
 //Router
 const gateway = require('./router/gateway').gateway
@@ -35,6 +39,7 @@ const wappalyzer = require('./router/wappalyzer').wappalyzer
 const business = require('./router/business').business
 const hbp = require('./router/htmlbyphantom').hbp
 const imagemaker = require('./router/imagemaker').imageMaker
+const loadtestresult = require('./router/loadtestresult').reportLoader
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
@@ -49,6 +54,7 @@ app.use(wappalyzer.routes(), wappalyzer.allowedMethods())
 app.use(business.routes(), business.allowedMethods())
 app.use(hbp.routes(), hbp.allowedMethods())
 app.use(imagemaker.routes(), imagemaker.allowedMethods())
+app.use(loadtestresult.routes(), loadtestresult.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();
@@ -81,7 +87,7 @@ if (config.openScheduler) {
     })
 }
 
-if(config.linkedInDriver) {
+if (config.linkedInDriver) {
     global.linkedInDriver = new webdriver.Builder().forBrowser("chrome").usingServer("http://45.63.25.194:5666/wd/hub").build()
 }
 
@@ -97,7 +103,7 @@ process.on("SIGINT", function () {
         dailyReport.cancel();
         searchResultTimer.cancel();
     }
-    if(linkedInDriver) {
+    if (linkedInDriver) {
         linkedInDriver.quit();
     }
     console.log("已经撤销全部定时器...")

@@ -21,7 +21,9 @@ app.use(loggerAsync())
 app.use(bodyParser())
 app.use(jsonp());
 const serve = require('koa-static');
-app.use(serve(__dirname + '/static'))
+app.use(serve(__dirname + '/public'))
+app.use(views(__dirname + '/public', {
+}));
 
 
 //Router
@@ -40,6 +42,7 @@ const business = require('./router/business').business
 const hbp = require('./router/htmlbyphantom').hbp
 const imagemaker = require('./router/imagemaker').imageMaker
 const loadtestresult = require('./router/loadtestresult').reportLoader
+const landing = require('./router/landing').landing
 app.use(gateway.routes(), gateway.allowedMethods());
 app.use(broken.routes(), broken.allowedMethods());
 app.use(coordinates.routes(), coordinates.allowedMethods());
@@ -55,6 +58,7 @@ app.use(business.routes(), business.allowedMethods())
 app.use(hbp.routes(), hbp.allowedMethods())
 app.use(imagemaker.routes(), imagemaker.allowedMethods())
 app.use(loadtestresult.routes(), loadtestresult.allowedMethods())
+app.use(landing.routes(), landing.allowedMethods())
 
 app.use(async(ctx, next) => {
     await next();

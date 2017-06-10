@@ -23,11 +23,13 @@ let landingHandler = async(ctx) => {
 }
 
 let infoSaved = async(ctx) => {
-    ctx.body = 'Ordered successfully!'
+    let info = ctx.request.body;
+    fs.appendFileSync('info.txt', JSON.stringify(info) + '\n')
+    ctx.body = `Thank you ${info.name}! Please check your email box! You info is ${JSON.stringify(info)}`
 }
 
 landing.get('/landing', landingHandler);
-landing.get('/saved', infoSaved);
+landing.post('/saved', infoSaved);
 
 
 module.exports = {

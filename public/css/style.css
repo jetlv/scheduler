@@ -151,7 +151,7 @@ fieldset {
 	background: none;
     background-color:#ff6927;
 	cursor: pointer;
-	padding: 25px 80px;
+	padding: 25px 30px;
 	display: inline-block;
 	margin: 15px 30px;
 	text-transform: uppercase;
@@ -339,7 +339,7 @@ body.loaded #preloader{
 
 .home-section-background:after {
     position: absolute;
-    background: rgba(0, 0, 0, .7);
+    /*background: rgba(0, 0, 0, .7);*/
     left: 0;
     top: 0;
     width: 100%;
@@ -675,7 +675,7 @@ ul.portfolio li.active {
 
 .statistics-section {
 	position: relative;
-    background: url(../images/bg/statistics.jpg);
+    /*background: url(../images/bg/statistics.jpg);*/
     background-size: cover;
     z-index: 1;
 }

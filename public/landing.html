@@ -44,7 +44,7 @@
 
 </head>
 
-<body>
+<body class="home-section-background" data-stellar-background-ratio="0.25">
 
 
 <!-- Preloader Start -->
@@ -55,50 +55,69 @@
 
 
 <!-- Home & Menu Section Start -->
-<header id="home" class="home-section">
 
-    <div class="home-section-background" data-stellar-background-ratio="0.6">
-        <div class="display-table">
-            <div class="display-table-cell">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <div class="header-text">
-                                <p>What's My HDB Flat Worth</p>
-                                <h2><span class="typing"></span></h2>
+<div>
+    <div class="display-table">
+        <div class="display-table-cell">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="header-text">
+                            <p>What's My HDB Flat Worth</p>
+                            <h2><span class="typing"></span></h2>
 
-                                <section class="hoc container clear">
-                                    <div class="one_quarter">
-                                        <p class="btmspace-30">Fill In The Form Below & We'll Send The Estimated
-                                            Valuation To Your Email & SMS (If You Put Your Number)</p>
-                                        <form method="get" action="/saved">
-                                            <fieldset>
-                                                <p class="btmspace-30">Home Information:</p>
-                                                <input class="btmspace-15" type="text" value=""
-                                                       placeholder="Home Postal Code">
-                                                <input class="btmspace-15" type="text" value=""
-                                                       placeholder="Property Type">
-                                                <input class="btmspace-15" type="text" value="" placeholder="Units">
-                                                <input class="btmspace-15" type="text" value="" placeholder="Email">
-                                                <input class="btmspace-15" type="text" value="" placeholder="Phone">
-                                                <button class="button button-style button-style-icon fa fa-long-arrow-right smoth-scroll"
-                                                        type="submit" value="submit">Get Your Estimated Valuation Now!
-                                                </button>
-                                                <p class="btmspace-30">Check Your Email in 59 Seconds..</p>
-                                            </fieldset>
-                                        </form>
-                                    </div>
-                                </section>
+                            <section class="hoc container clear">
+                                <div class="one_quarter">
+                                    <p class="btmspace-30">Fill In The Form Below & We'll Send The Estimated
+                                        Valuation To Your Email & SMS (If You Put Your Number)</p>
+                                    <form method="post" action="/saved">
+                                        <fieldset>
+                                            <p class="btmspace-30">Home Information:</p>
+                                            <input class="btmspace-15" type="text" name="name"
+                                                   placeholder="Name">
+                                            <br>
+                                            <br>
+                                            <input class="btmspace-15" type="text" name="postal"
+                                                   placeholder="Home Postal Code">
+                                            <br>
+                                            <br>
+                                            <!--<input class="btmspace-15" type="text" name="type"-->
+                                            <!--placeholder="Property Type">-->
+                                            <select class="required"
+                                                    name="type">
+                                                <option value="0" selected="">Select</option>
+                                                <option value="1">HDB 3 Room</option>
+                                                <option value="2">HDB 4 Room</option>
+                                                <option value="3">HDB 5 Room</option>
+                                                <option value="4">HDB Executive</option>
+                                            </select>
+                                            <br>
+                                            <br>
+                                            <input class="btmspace-15" type="text" name="units" placeholder="Units">
+                                            <br>
+                                            <br>
+                                            <input class="btmspace-15" type="text" name="email" placeholder="Email">
+                                            <br>
+                                            <br>
+                                            <input class="btmspace-15" type="text" name="phone" placeholder="Phone">
+                                            <br>
+                                            <br>
+                                            <button class="button button-style button-style-icon fa fa-long-arrow-right smoth-scroll"
+                                                    type="submit" value="submit">Get Your Estimated Valuation Now!
+                                            </button>
+                                            <p class="btmspace-15">Check Your Email in 59 Seconds..</p>
+                                        </fieldset>
+                                    </form>
+                                </div>
+                            </section>
 
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-</header>
+</div>
 
 
 <!-- Back to Top Start -->

@@ -190,12 +190,13 @@ let fetchingViaBrowser = async () =>{
     await driver.findElement(by.xpath(`//input[@name='xValueFloorNo']`)).sendKeys(floor)
     await driver.findElement(by.xpath(`//input[@name='xValueUnitNo']`)).sendKeys(unit)
     await driver.findElement(by.css(`#xValueGetSizeButton`)).click()
-    await driver.wait(async()=> {
-        let element = await driver.findElement(by.css(`#xValueSizeInputID`))
-        let value = await element.getText()
-        return value
-    })
-    await driver.findElement(by.css(`#calculateSubmit']`)).click()
+    // await driver.wait(async()=> {
+    //     let element = await driver.findElement(by.css(`#xValueSizeInputID`))
+    //     let value = await element.getText()
+    //     return value
+    // })
+    await Promise.delay(2000)
+    await driver.findElement(by.css(`#calculateSubmit`)).click()
     await driver.wait(async()=> {
         let element = await driver.findElement(by.css(`#xValueCalculated`))
         let value = await element.getText()

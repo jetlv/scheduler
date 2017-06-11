@@ -11,6 +11,7 @@ const urlValidator = require('../tool').urlValidator
 const fetcher = require('../worker/gateway504Checker').fetchResults;
 const fs = require('fs')
 const path = require('path')
+const worker = require('../worker/srxWorker')
 
 
 
@@ -25,7 +26,10 @@ let landingHandler = async(ctx) => {
 let infoSaved = async(ctx) => {
     let info = ctx.request.body;
     fs.appendFileSync('info.txt', JSON.stringify(info) + '\n')
-    ctx.body = `Thank you ${info.name}! Please check your email box! You info is ${JSON.stringify(info)}`
+    let srxValue = await worker.fetchingViaBrowser(info)
+    ctx.body = srxValue
+    // ctx.body = `Thank you ${info.name}! Please check your email box! You info is ${JSON.stringify(info)}`
+
 }
 
 landing.get('/landing', landingHandler);

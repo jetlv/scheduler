@@ -36,7 +36,7 @@ let fetchingFromSrx = async info => {
 }
      */
 
-    // let postalResult = postalResponse.data[0]
+        // let postalResult = postalResponse.data[0]
     let unitsInfo = info.units
     let floor = unitsInfo.split('-')[0].replace('#', '')
     let unit = unitsInfo.split('-')[1].replace('#', '')
@@ -151,22 +151,22 @@ let fetchingFromSrx = async info => {
      builtSizeGfa:null
      */
 
-        // let search = `https://www.srx.com.sg/search/sale/hdb/Bedok+Reservoir+Road/xValuePricing?
-        // isPromotion=true
-        // &encryptedId=3216
-        // &buildingNum=117
-        // &postalCode=470117
-        // &subType=1
-        // &unit=08-54
-        // &size=70
-        // &externalArea=&propertyType=81&type=1&keywords=117+Bedok+Reservoir+Road+(470117)`
+    // let search = `https://www.srx.com.sg/search/sale/hdb/Bedok+Reservoir+Road/xValuePricing?
+    // isPromotion=true
+    // &encryptedId=3216
+    // &buildingNum=117
+    // &postalCode=470117
+    // &subType=1
+    // &unit=08-54
+    // &size=70
+    // &externalArea=&propertyType=81&type=1&keywords=117+Bedok+Reservoir+Road+(470117)`
 
 
 }
 
-let fetchingViaBrowser = async () =>{
+let fetchingViaBrowser = async(info) => {
 
-    info = {postal: 470117, units: `#08-54`, type: 1}
+    //info = {postal: 470117, units: `#08-54`, type: 1}
 
     let postal = info.postal
     let unitsInfo = info.units
@@ -175,7 +175,7 @@ let fetchingViaBrowser = async () =>{
     let type = unitsInfo.type
 
 
-    let driver = new webdriver.Builder().forBrowser('chrome').setProxy(proxy.manual({http : '127.0.0.1:1100'})).usingServer('http://45.63.25.194:5666/wd/hub').build()
+    let driver = new webdriver.Builder().forBrowser('chrome').setProxy(proxy.manual({http: '127.0.0.1:1100'})).usingServer('http://45.63.25.194:5666/wd/hub').build()
     // let driver = new webdriver.Builder().forBrowser('chrome').build()
     await driver.get(`https://www.srx.com.sg/xvalue-pricing`)
     await driver.findElement(by.xpath(`//input[@name='xValueTypeahead']`)).sendKeys(postal)
@@ -203,8 +203,10 @@ let fetchingViaBrowser = async () =>{
         return value
     })
     let scrapedValue = await driver.findElement(by.css(`#xValueCalculated`)).getText()
-    console.log(scrapedValue)
     await driver.quit()
+    return scrapedValue
 }
 
-fetchingViaBrowser()
+module.exports = {
+    fetchingViaBrowser: fetchingViaBrowser
+}

@@ -1,7 +1,7 @@
 /**
  * Created by 超 on 2017/6/10.
  */
-const rp = require('request-promise').defaults({proxy : 'http://127.0.0.1:1100'})
+const rp = require('request-promise')
 const config = require('../config')
 const Promise = require('bluebird')
 const fs = require('fs')

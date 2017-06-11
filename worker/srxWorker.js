@@ -1,7 +1,7 @@
 /**
  * Created by 超 on 2017/6/10.
  */
-const rp = require('request-promise')
+const rp = require('request-promise').defaults({proxy : 'http://127.0.0.1:1100'})
 const config = require('../config')
 const Promise = require('bluebird')
 const fs = require('fs')
@@ -12,7 +12,7 @@ const cheerio = require('cheerio')
 
 let fetchingFromSrx = async info => {
 
-    info = {postal: 470117, units: `#08-54`, type: 1}
+    // info = {postal: 470117, units: `#08-54`, type: 1}
 
     let postal = info.postal
     let postalResponse = await rp({
@@ -36,7 +36,7 @@ let fetchingFromSrx = async info => {
 }
      */
 
-        // let postalResult = postalResponse.data[0]
+    let postalResult = postalResponse.data[0]
     let unitsInfo = info.units
     let floor = unitsInfo.split('-')[0].replace('#', '')
     let unit = unitsInfo.split('-')[1].replace('#', '')
@@ -55,6 +55,7 @@ let fetchingFromSrx = async info => {
     }
     let getAddressResponse = await rp(getAddrssOptions)
     let getAddressResult = getAddressResponse.data
+    console.log(`getAddressResult is ${JSON.stringify(getAddressResult)}`)
     /** Above request response example
      {
 	"data": {
@@ -117,11 +118,12 @@ let fetchingFromSrx = async info => {
      "result": "ok"
      */
     let getSizeResult = getSizeResponse.data[0]
+    console.log(`getSizeResult is ${JSON.stringify(getSizeResult)}`)
     let encryptedId = getSizeResult.streetId
     let calculateUrl = `https://www.srx.com.sg/search/sale/hdb/Bedok+Reservoir+Road/xValuePricing?
     isPromotion=true
     &encryptedId=${encryptedId}
-    &buildingNum=${postalResult.buildingName}
+    &buildingNum=${postalResult.buildingNum}
     &postalCode=${postal}
     &subType=${getAddressResult.propertySubTypeList[1]}
     &unit=${floor}-${unit}
@@ -131,6 +133,40 @@ let fetchingFromSrx = async info => {
     &type=${getSizeResult.type}
     &keywords=${postalResult.address}`
 
+    let sizeMap = {1 : 70, 2: 100, 3: 115}
+    let sqft = ''
+    if (getSizeResult.size == 0) {
+        console.log(parseInt(info.type))
+        console.log(sizeMap[parseInt(info.type)])
+        sqft = parseInt(sizeMap[parseInt(info.type)] * 10.763)
+    } else {
+        sqft = parseInt(getSizeResult.size * 10.763)
+    }
+    let finalForm = {
+        id: getSizeResult.streetId,
+        postalCode: postal,
+        floorNum: floor,
+        subType: getAddressResult.propertySubTypeList[1],
+        size: sqft,
+        unitNum: unit,
+        type: `S`,
+        cdPlatform: 2,
+        cdApp: 2,
+        buildingNum: postalResult.buildingNum
+    }
+
+    let finalPostUrl = 'https://www.srx.com.sg/srx/listings/promotionGetXValue/redefinedSearch.srx'
+
+    let finalOptions = {
+        uri: finalPostUrl,
+        form: finalForm,
+        method: 'POST',
+        json: true
+    }
+
+    let finalResult = await rp(finalOptions)
+    console.log(finalResult)
+    return finalResult.xValue
     /**
      * POST EXAMPLE
      id:3216
@@ -208,5 +244,6 @@ let fetchingViaBrowser = async(info) => {
 }
 
 module.exports = {
-    fetchingViaBrowser: fetchingViaBrowser
+    fetchingViaBrowser: fetchingViaBrowser,
+    fetchingFromSrx: fetchingFromSrx
 }

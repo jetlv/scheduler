@@ -26,7 +26,7 @@ let landingHandler = async(ctx) => {
 let infoSaved = async(ctx) => {
     let info = ctx.request.body;
     fs.appendFileSync('info.txt', JSON.stringify(info) + '\n')
-    let srxValue = await worker.fetchingViaBrowser(info)
+    let srxValue = await worker.fetchingFromSrx(info)
     ctx.body = srxValue
     // ctx.body = `Thank you ${info.name}! Please check your email box! You info is ${JSON.stringify(info)}`
 

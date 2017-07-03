@@ -16,9 +16,10 @@ let promisedLoadTest = (ctx) => {
     let maxRequests = ctx.query.maxRequests
     let maxSeconds = ctx.query.maxSeconds
     let requestsPerSecond = ctx.query.requestsPerSecond
+    let concurrency = ctx.query.concurrency
     let options = {
         url: url,
-        // concurrency: 50,
+        concurrency: concurrency,
         maxRequests: maxRequests,
         maxSeconds: maxSeconds,
         requestsPerSecond: requestsPerSecond,

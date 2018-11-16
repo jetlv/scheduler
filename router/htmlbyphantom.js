@@ -25,7 +25,7 @@ let toFetch = async link => {
         }
         if (signIn) {
             await driver.findElement(by.css(`input[type='text']`)).sendKeys("jetlyu@aliyun.com")
-            await driver.findElement(by.css(`input[type='password']`)).sendKeys("lc799110")
+            await driver.findElement(by.css(`input[type='password']`)).sendKeys("xxxxx")
             await driver.findElement(by.css(`input[type='submit']`)).click()
         }
         await Promise.delay(3000)
